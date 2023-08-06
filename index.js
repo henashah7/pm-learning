@@ -7,7 +7,7 @@ const cors = require('cors')
 const mysql = require('mysql2')
 const multer = require('multer')
 const path = require('path')
- 
+const port = 3000
  
 //use express static folder
 app.use(cors())
@@ -22,10 +22,10 @@ app.use(bodyparser.urlencoded({
  
 // Database connection
 const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "password",
-    database: "test"
+    host: "my-database-1-instance-1.czwhfi5uavam.us-east-2.rds.amazonaws.com",
+    user: "admin",
+    password: "g0disg00d",
+    database: "main"
 })
  
 db.connect(function (err) {
@@ -35,10 +35,15 @@ db.connect(function (err) {
     console.log('Connected to the MySQL server.');
 })
 
+app.listen(port, () => console.log(`Pm learning project is listening on port ${port}!`));
+
 app.get('/', (req, res) => {
-  console.log("in get /");  
 //   res.sendFile(__dirname + '/index.html');
 });
+
+app.get('/status', (req, res) => {
+    res.send({status: "I'm up and running"});
+  });
 
 app.get("/chart", (req, res) => {
     const query = 'SELECT age as urgency, id as importance FROM tasks';
