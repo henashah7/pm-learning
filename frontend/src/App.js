@@ -65,7 +65,7 @@ function App() {
 
   const getChart = () => {
     console.log("inside getChart function");
-    Axios.get("/api/chart").then((results) => {
+    Axios.get("http://3.144.115.110/api/chart").then((results) => {
       alert("succesfully retrieved inside getChart function");
       console.log(results);
       setData(results.data); //not sure if this line of code makes sense
@@ -74,7 +74,7 @@ function App() {
   }
 
   const submit = () => {
-    Axios.post("/api/uploadfile").then(() => {
+    Axios.post("https://3.144.115.110/api/uploadfile").then(() => {
       console.log("returned from post api");
       alert("Succesfully added");
     });
