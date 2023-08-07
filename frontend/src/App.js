@@ -64,17 +64,15 @@ function App() {
   });
 
   const getChart = () => {
-    console.log("inside getChart function");
-    Axios.get("http://3.144.115.110/api/chart").then((results) => {
+    Axios.get("https://3.144.115.110:3000/api/chart").then((results) => {
       alert("succesfully retrieved inside getChart function");
-      console.log(results);
       setData(results.data); //not sure if this line of code makes sense
       options.data = results.data;
     });
   }
 
   const submit = () => {
-    Axios.post("https://3.144.115.110/api/uploadfile").then(() => {
+    Axios.post("https://3.144.115.110:3000/api/uploadfile").then(() => {
       console.log("returned from post api");
       alert("Succesfully added");
     });
@@ -96,7 +94,7 @@ function App() {
       <div>
         <button onClick={getChart}> Generate Eisenhower Matrix</button>
       </div>
-      {console.log("inside app")}
+      {console.log(options.data)}
       <AgChartsReact classname='chart' options={options}></AgChartsReact>
     </div>
   );

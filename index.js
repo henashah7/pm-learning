@@ -1,10 +1,10 @@
 const express = require('express')
 const app = express()
 const bodyparser = require('body-parser')
-const fs = require('fs')
+// const fs = require('fs')
 const csv = require('fast-csv')
 const cors = require('cors')
-const mysql = require('mysql2')
+const mysql = require('mysql')
 const multer = require('multer')
 const path = require('path')
  
@@ -15,8 +15,8 @@ app.use(cors())
 app.use(express.static(path.join(__dirname, '/frontend/build')));
 
 // handle all requests and serve the React app's index.html
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/frontend/', 'build', 'index.html'));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.use(express.json())
@@ -34,6 +34,13 @@ const db = mysql.createConnection({
     password: "g0disg00d",
     database: "main"
 })
+
+// const db = mysql.createConnection({
+//     host: "localhost",
+//     user: "root",
+//     password: "password",
+//     database: "test"
+// })
  
 db.connect(function (err) {
     if (err) {
@@ -56,7 +63,6 @@ app.get("/api/chart", (req, res) => {
     console.log("calling chart api");
     const query = 'SELECT urgency, importance, tag FROM tasks';
     db.query(query, (err, result) => {
-    console.log(result);
     res.send(result);
     });
 });
@@ -95,7 +101,7 @@ function UploadCsvDataToMySQL(filePath){
              
             // delete file after saving to MySQL database
             // -> you can comment the statement to see the uploaded CSV file.
-            fs.unlinkSync(filePath)
+            // fs.unlinkSync(filePath)
         });
   
     stream.pipe(csvStream);
