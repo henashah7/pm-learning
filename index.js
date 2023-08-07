@@ -7,12 +7,19 @@ const cors = require('cors')
 const mysql = require('mysql2')
 const multer = require('multer')
 const path = require('path')
-const port = 3000
  
 //use express static folder
 app.use(cors())
+
+// serve static files from the "build" directory
+app.use(express.static(path.join(__dirname, '/frontend/build')));
+
+// handle all requests and serve the React app's index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/frontend/', 'build', 'index.html'));
+});
+
 app.use(express.json())
-app.use(express.static("./public"))
  
 // body-parser middleware use
 app.use(bodyparser.json())
@@ -20,7 +27,7 @@ app.use(bodyparser.urlencoded({
     extended: true
 }))
  
-// Database connection
+// database connection
 const db = mysql.createConnection({
     host: "my-database-1-instance-1.czwhfi5uavam.us-east-2.rds.amazonaws.com",
     user: "admin",
@@ -35,31 +42,31 @@ db.connect(function (err) {
     console.log('Connected to the MySQL server.');
 })
 
-app.listen(port, () => console.log(`Pm learning project is listening on port ${port}!`));
+// create connection
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => console.log(`pm learning project is listening on port ${PORT}!`));
 
-app.get('/', (req, res) => {
-//   res.sendFile(__dirname + '/index.html');
-});
-
-app.get('/status', (req, res) => {
-    res.send({status: "I'm up and running"});
+// get server status
+app.get('/api/status', (req, res) => {
+    res.send({status: "I'm running"});
   });
 
-app.get("/chart", (req, res) => {
-    const query = 'SELECT age as urgency, id as importance FROM tasks';
+// generate chart
+app.get("/api/chart", (req, res) => {
+    console.log("calling chart api");
+    const query = 'SELECT urgency, importance, tag FROM tasks';
     db.query(query, (err, result) => {
-    // console.log(result);
+    console.log(result);
     res.send(result);
     });
 });
 
-
+// upload csv data into database
 const upload = multer({ dest: 'uploads/' })
-app.post('/uploadfile', upload.single('uploadfile'), (req, res) =>{
+app.post('/api/uploadfile', upload.single('uploadfile'), (req, res) =>{
     console.log(req.file);
     UploadCsvDataToMySQL(__dirname + '/uploads/' + req.file.filename);
     console.log('CSV file data has been uploaded in mysql database');
-    // res.status(200).send("Successfully uploaded");
 });
 
 function UploadCsvDataToMySQL(filePath){
@@ -79,7 +86,7 @@ function UploadCsvDataToMySQL(filePath){
                 if (error) {
                     console.error("DB err_________________" + error);
                 } else {
-                    let query = 'INSERT INTO tasks (name, urgency, importance) VALUES ?';
+                    let query = 'INSERT INTO tasks (title, tag, urgency, importance) VALUES ?';
                     db.query(query, [csvData], (error, response) => {
                         console.log(error || response);
                     });
@@ -94,9 +101,6 @@ function UploadCsvDataToMySQL(filePath){
     stream.pipe(csvStream);
 }
  
-//create connection
-const PORT = process.env.PORT || 3000
-app.listen(PORT, () => console.log(`Server is running at port ${PORT}`))
 
 //------------------------
 //! Use of Multer
