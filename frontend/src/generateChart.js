@@ -67,7 +67,7 @@ export default function GenerateChart() {
   });
 
   const getChart = () => {
-    Axios.get("https:/henashah.com:3000/api/chart").then((results) => {
+    Axios.get("https://henashah.com:3000/api/chart").then((results) => {
       alert("succesfully retrieved inside getChart function");
       setData(results.data); //not sure if this line of code makes sense
       options.data = results.data;
@@ -80,7 +80,7 @@ export default function GenerateChart() {
   return (
     <div className="chart-grid">
       <div>
-        <Button variant="contained" startIcon={<RefreshIcon/>} onClick={getChart}> Generate Eisenhower Matrix</Button>
+        <Button variant="contained" sx = {{backgroundColor : '#00A897' }} startIcon={<RefreshIcon/> } onClick={getChart}>Refresh Chart</Button>
       </div>
       {console.log(options.data)}
       {/* <AgChartsReact classname='chart' options={options}></AgChartsReact> */}

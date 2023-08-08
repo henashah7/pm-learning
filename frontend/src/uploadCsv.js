@@ -8,7 +8,7 @@ import { AgChartsReact } from 'ag-charts-react';
 export default function UploadCsv() {
 
     const submit = () => {
-        Axios.post("https:/henashah.com:3000/api/uploadfile").then(() => {
+        Axios.post("https://henashah.com:3000/api/uploadfile").then(() => {
           console.log("returned from post api");
           alert("Succesfully added");
         });
@@ -20,8 +20,8 @@ export default function UploadCsv() {
       <div className="form">
         <form action="/uploadfile" enctype="multipart/form-data" method="post">
           <input type="file" name="uploadfile" accept='csv'/>
-          <Button variant="contained" startIcon={<UploadIcon/>} onClick={submit}> Upload Task CSV</Button>
-        </form>  
+          <Button variant="contained" sx = {{backgroundColor : '#00A897' }} startIcon={<UploadIcon/>} onClick={submit}> Upload Task CSV</Button>
+        </form>
       </div>
     </div>
   );
