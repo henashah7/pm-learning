@@ -14,11 +14,11 @@ app.use(cors())
 // serve static files from the "build" directory
 app.use(express.static(path.join(__dirname, '/frontend/build')));
 
+console.log(__dirname);
 // handle all requests and serve the React app's index.html
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
-});
-
+})
 app.use(express.json())
  
 // body-parser middleware use
@@ -51,6 +51,29 @@ app.listen(PORT, () => console.log(`pm learning project is listening on port ${P
 app.get('/api/status', (req, res) => {
     res.send({status: "I'm running"});
   });
+
+// get testimony
+app.post("/api/insert") , (req, res) => {
+    db.connect((error) => {
+        if (error) {
+            console.error("DB err_________________" + error);
+        } else {
+            const query = 'INSERT INTO testimonials (name, profile, message) VALUES ?';;
+            db.query(query, res, (error, response) => {
+                console.log(error || response);
+            });
+        }
+    });
+}
+
+// get testimonies
+app.get("/api/testimonies", (req, res) => {
+    console.log("calling testimony api");
+    const query = 'SELECT name, message FROM testimonies';
+    db.query(query, (err, result) => {
+    res.send(result);
+    });
+});
 
 // generate chart
 app.get("/api/chart", (req, res) => {
