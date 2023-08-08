@@ -67,7 +67,7 @@ export default function GenerateChart() {
   });
 
   const getChart = () => {
-    Axios.get("/api/chart").then((results) => {
+    Axios.get("https:/henashah.com/api/chart").then((results) => {
       alert("succesfully retrieved inside getChart function");
       setData(results.data); //not sure if this line of code makes sense
       options.data = results.data;

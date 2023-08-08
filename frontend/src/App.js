@@ -10,14 +10,7 @@ import GenerateChart from './generateChart';
 import UploadCsv from './uploadCsv';
 
 function App() {
-
-  const submit = () => {
-    Axios.post("/api/uploadfile").then(() => {
-      console.log("returned from post api");
-      alert("Succesfully added");
-    });
-  }
-
+  
   return (
     <div className="App">
       <Helmet>
