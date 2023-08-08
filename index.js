@@ -35,12 +35,6 @@ const db = mysql.createConnection({
     database: "main"
 })
 
-// const db = mysql.createConnection({
-//     host: "localhost",
-//     user: "root",
-//     password: "password",
-//     database: "test"
-// })
  
 db.connect(function (err) {
     if (err) {
@@ -67,7 +61,7 @@ app.get("/api/chart", (req, res) => {
     });
 });
 
-// upload csv data into database
+// upload csv to "uploads folder"
 const upload = multer({ dest: 'uploads/' })
 app.post('/api/uploadfile', upload.single('uploadfile'), (req, res) =>{
     console.log(req.file);
@@ -75,6 +69,7 @@ app.post('/api/uploadfile', upload.single('uploadfile'), (req, res) =>{
     console.log('CSV file data has been uploaded in mysql database');
 });
 
+// upload csv data into database
 function UploadCsvDataToMySQL(filePath){
     let stream = fs.createReadStream(filePath);
     let csvData = [];

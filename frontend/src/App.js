@@ -1,78 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import Axios from 'axios';
+import { Helmet } from "react-helmet";
+import Button from '@mui/material/Button';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import UploadIcon from '@mui/icons-material/Upload';
 import { AgChartsReact } from 'ag-charts-react';
+import GenerateChart from './generateChart';
+import UploadCsv from './uploadCsv';
 
 function App() {
-  const [data, setData] = useState([]);
-  const [options, setOptions] = useState({
-    autoSize: true,
-    title: {
-      text: 'Time Allocation  ',
-    },
-    subtitle: {
-      text: "by urgency and importance of tasks",
-    },
-    series: [
-      {
-        type: 'scatter',
-        title: 'Task',
-        xKey: 'urgency',
-        yKey: 'importance',
-        sizeKey: 'urgency',
-        marker: {
-          size: 6,
-          maxSize: 30,
-          fill: 'rgba(123,145,222,0.71)',
-          stroke: '#56659b',
-        }
-      },
-    ],
-    axes: [
-      {
-        type: 'number',
-        position: 'bottom',
-        title: {
-          text: 'Urgency',
-        },
-        label: {
-          rotation: 45,
-          formatter: (params) => {
-            return params.value + ' points';
-          },
-        },
-      },
-      {
-        type: 'number',
-        position: 'left',
-        title: {
-          text: 'Importance',
-        },
-        label: {
-          formatter: (params) => {
-            return params.value + ' points';
-          },
-        },
-      },
-    ],
-    scales: {
-        y: {
-          beginAtZero: true,
-        },
-      },
-    data: data,
-  });
-
-  const getChart = () => {
-    Axios.get("https://3.144.115.110:3000/api/chart").then((results) => {
-      alert("succesfully retrieved inside getChart function");
-      setData(results.data); //not sure if this line of code makes sense
-      options.data = results.data;
-    });
-  }
 
   const submit = () => {
-    Axios.post("https://3.144.115.110:3000/api/uploadfile").then(() => {
+    Axios.post("http//localhost:3000/api/uploadfile").then(() => {
       console.log("returned from post api");
       alert("Succesfully added");
     });
@@ -80,22 +20,27 @@ function App() {
 
   return (
     <div className="App">
+      <Helmet>
+        <title>My PM LEARNING APP</title>
+        <link rel="canonical" href="http://example.com"/>
+        <meta name="sample app" content="sample app, time spend" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>
+      </Helmet>
       <header className="App-header"> 
         <h1>
           How am I using my time? 
         </h1>
       </header>
-      <div className="form">
+      <UploadCsv />
+      {/* <div className="form">
         <form action="/uploadfile" enctype="multipart/form-data" method="post">
           <input type="file" name="uploadfile" accept='csv'/>
-          <button onClick={submit}> Upload Task CSV</button>
+          <Button variant="contained" startIcon={<UploadIcon/>} onClick={submit}> Upload Task CSV</Button>
         </form>  
+      </div> */}
+      <div classname="chart-grid">
+        <GenerateChart/>
       </div>
-      <div>
-        <button onClick={getChart}> Generate Eisenhower Matrix</button>
-      </div>
-      {console.log(options.data)}
-      <AgChartsReact classname='chart' options={options}></AgChartsReact>
     </div>
   );
 }
