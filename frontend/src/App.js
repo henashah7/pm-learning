@@ -12,7 +12,7 @@ import UploadCsv from './uploadCsv';
 function App() {
 
   const submit = () => {
-    Axios.post("http//localhost:3000/api/uploadfile").then(() => {
+    Axios.post("api/uploadfile").then(() => {
       console.log("returned from post api");
       alert("Succesfully added");
     });
