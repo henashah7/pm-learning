@@ -8,7 +8,7 @@ import { AgChartsReact } from 'ag-charts-react';
 export default function UploadCsv() {
 
   const submit = () => {
-    Axios.post("http//localhost:3000/api/uploadfile").then(() => {
+    Axios.post("/api/uploadfile").then(() => {
       console.log("returned from post api");
       alert("Succesfully added");
     });
