@@ -44,7 +44,7 @@ db.connect(function (err) {
 })
 
 // create connection
-const PORT = process.env.PORT || 443
+const PORT = process.env.PORT || 3000
 app.listen(PORT, () => console.log(`pm learning project is listening on port ${PORT}!`));
 
 // get server status
