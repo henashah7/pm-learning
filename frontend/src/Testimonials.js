@@ -52,7 +52,7 @@ function Testimonials() {
   }
 
   const getTestimonies = () => {
-    Axios.get("https://henashah.com:3000/api/testimonies").then((results) => {
+    Axios.get("https://henashah.com:80/api/testimonies").then((results) => {
       console.log("returned from post api");
       setItems(results.data); //not sure if this line of code makes sense
       items = results.data;
